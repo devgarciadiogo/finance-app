@@ -1,0 +1,16 @@
+# Compilados
+target/
+
+# IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Variáveis de ambiente (segurança)
+.env
+*.env
