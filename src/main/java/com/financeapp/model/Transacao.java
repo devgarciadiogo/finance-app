@@ -3,17 +3,28 @@ package com.financeapp.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "tipo"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Receita.class, name = "RECEITA"),
+        @JsonSubTypes.Type(value = Despesa.class, name = "DESPESA")
+})
 
 public abstract class Transacao {
 
-    private final String id;
-    private final LocalDate data;
+    private String id;
+    private LocalDate data;
     private BigDecimal valor;
     private String descricao;
     private Categoria categoria;
 
     public Transacao(BigDecimal valor, String descricao, Categoria categoria) {
-        // Validações — a classe se protege de dados inválidos
+        // Validações
         if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Valor deve ser maior que zero.");
         }
@@ -29,6 +40,14 @@ public abstract class Transacao {
         this.valor = valor;
         this.descricao = descricao;
         this.categoria = categoria;
+    }
+
+    protected Transacao() {
+        this.id = null;
+        this.data = null;
+        this.valor = null;
+        this.descricao = null;
+        this.categoria = null;
     }
 
     // Método abstrato — cada subclasse OBRIGA a dizer o seu tipo

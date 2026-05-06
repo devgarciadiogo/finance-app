@@ -1,0 +1,91 @@
+[ {
+  "id" : "4c63c49d-fd84-44f9-8691-b790db5d7e5d",
+  "nome" : "Diogo",
+  "email" : "diogo@email.com",
+  "carteira" : {
+    "transacoes" : [ {
+      "tipo" : "RECEITA",
+      "id" : "59317da0-f61d-4954-b011-6d80b79bfd54",
+      "data" : "2026-05-02",
+      "valor" : 5000.00,
+      "descricao" : "Salário abril",
+      "categoria" : "SALARIO",
+      "tipo" : "RECEITA"
+    }, {
+      "tipo" : "RECEITA",
+      "id" : "20a05ace-ab38-451c-ab71-96dea7044a4d",
+      "data" : "2026-05-02",
+      "valor" : 800.00,
+      "descricao" : "Freela site",
+      "categoria" : "FREELANCE",
+      "tipo" : "RECEITA"
+    }, {
+      "tipo" : "DESPESA",
+      "id" : "4ff98dfb-a9f4-4cf6-ba31-55becb271938",
+      "data" : "2026-05-02",
+      "valor" : 1200.00,
+      "descricao" : "Aluguel",
+      "categoria" : "MORADIA",
+      "tipo" : "DESPESA"
+    }, {
+      "tipo" : "DESPESA",
+      "id" : "f5ca9132-aa81-459a-87f5-5641faf5a112",
+      "data" : "2026-05-02",
+      "valor" : 450.00,
+      "descricao" : "Mercado",
+      "categoria" : "ALIMENTACAO",
+      "tipo" : "DESPESA"
+    } ]
+  },
+  "metas" : [ {
+    "id" : "10f829d8-ecf0-4f98-b79b-b61f2cc635fc",
+    "categoria" : "ALIMENTACAO",
+    "valorLimite" : 400.00
+  } ],
+  "saldo" : 4150.00
+}, {
+  "id" : "bd0fc18d-8801-4fd1-8f43-4336eb8c151e",
+  "nome" : "Diogo",
+  "email" : "diogo@email.com",
+  "carteira" : {
+    "transacoes" : [ {
+      "tipo" : "RECEITA",
+      "id" : "9433efc2-cf36-4671-b4ff-9d8462e6b704",
+      "data" : "2026-05-05",
+      "valor" : 5000.00,
+      "descricao" : "Salário abril",
+      "categoria" : "SALARIO",
+      "tipo" : "RECEITA"
+    }, {
+      "tipo" : "RECEITA",
+      "id" : "fbaa6928-6126-45ef-be55-322c137304f3",
+      "data" : "2026-05-05",
+      "valor" : 800.00,
+      "descricao" : "Freela site",
+      "categoria" : "FREELANCE",
+      "tipo" : "RECEITA"
+    }, {
+      "tipo" : "DESPESA",
+      "id" : "8e2def3d-6b86-4083-a27c-1fe4de992473",
+      "data" : "2026-05-05",
+      "valor" : 1200.00,
+      "descricao" : "Aluguel",
+      "categoria" : "MORADIA",
+      "tipo" : "DESPESA"
+    }, {
+      "tipo" : "DESPESA",
+      "id" : "eca3bdd4-7945-4fc5-8d97-c4e35ed50a9b",
+      "data" : "2026-05-05",
+      "valor" : 450.00,
+      "descricao" : "Mercado",
+      "categoria" : "ALIMENTACAO",
+      "tipo" : "DESPESA"
+    } ]
+  },
+  "metas" : [ {
+    "id" : "31192f62-52f2-47fa-b5bb-756ba3b92ed8",
+    "categoria" : "ALIMENTACAO",
+    "valorLimite" : 400.00
+  } ],
+  "saldo" : 4150.00
+} ]

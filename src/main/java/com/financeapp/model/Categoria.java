@@ -11,7 +11,7 @@ public enum Categoria {
     EDUCACAO,
     OUTROS;
 
-    // Enums podem ter métodos! Vamos adicionar um para exibição
+    // Metodo de exibição personalizado de cada Categoria
     public String exibir() {
         return switch (this) {
             case SALARIO -> "Salário";

@@ -1,20 +1,22 @@
 package com.financeapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.financeapp.exception.SaldoInsuficienteException;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Usuario {
 
-    private final String id;
+    private String id;
     private String nome;
     private String email;
-    private final Carteira carteira;
-    private final List<Meta> metas = new ArrayList<>();
+    private Carteira carteira;
+    private List<Meta> metas = new ArrayList<>();
 
     public Usuario(String nome, String email) {
         validarNome(nome);
@@ -26,13 +28,18 @@ public class Usuario {
         this.carteira = new Carteira();
     }
 
+    protected Usuario() {
+        this.id = null;
+        this.carteira = new Carteira();
+        this.metas = new ArrayList<>();
+    }
+
     public void adicionarReceita(BigDecimal valor, String descricao, Categoria categoria) {
         Receita receita = new Receita(valor, descricao, categoria);
         carteira.adicionarTransacao(receita);
     }
 
     public void adicionarDespesa(BigDecimal valor, String descricao, Categoria categoria) {
-        // Aqui usamos nossa exceção customizada!
         BigDecimal saldoAtual = carteira.calcularSaldo();
         if (valor.compareTo(saldoAtual) > 0) {
             throw new SaldoInsuficienteException(saldoAtual, valor);
@@ -45,7 +52,6 @@ public class Usuario {
         if (meta == null) {
             throw new IllegalArgumentException("Meta não pode ser nula.");
         }
-        // Não permite duas metas pra mesma categoria
         boolean jaExiste = metas.stream()
                 .anyMatch(m -> m.getCategoria() == meta.getCategoria());
         if (jaExiste) {
@@ -83,7 +89,6 @@ public class Usuario {
         this.email = email;
     }
 
-    // Métodos privados de validação — só a classe conhece essas regras
     private void validarNome(String nome) {
         if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("Nome não pode ser vazio.");

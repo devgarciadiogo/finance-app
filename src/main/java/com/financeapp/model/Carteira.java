@@ -49,7 +49,7 @@ public class Carteira {
     }
 
     public List<Transacao> getTransacoes() {
-        // Retorna cópia — ninguém de fora mexe na lista original
+        // Retorna cópia quem está de fora não consegue alterar
         return Collections.unmodifiableList(transacoes);
     }
 

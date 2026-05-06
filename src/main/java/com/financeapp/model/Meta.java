@@ -5,8 +5,8 @@ import java.util.UUID;
 
 public class Meta {
 
-    private final String id;
-    private final Categoria categoria;
+    private String id;
+    private Categoria categoria;
     private BigDecimal valorLimite;
 
     public Meta(Categoria categoria, BigDecimal valorLimite) {
@@ -21,6 +21,10 @@ public class Meta {
         this.categoria = categoria;
         this.valorLimite = valorLimite;
     }
+
+    protected Meta() {
+    }
+
 
     public String getId() {
         return id;

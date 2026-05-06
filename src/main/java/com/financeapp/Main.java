@@ -1,10 +1,10 @@
 package com.financeapp;
 
-import com.financeapp.exception.SaldoInsuficienteException;
-import com.financeapp.model.Carteira;
 import com.financeapp.model.Categoria;
 import com.financeapp.model.Meta;
 import com.financeapp.model.Usuario;
+import com.financeapp.repository.UsuarioRepository;
+import com.financeapp.repository.UsuarioRepositoryJson;
 import com.financeapp.service.RelatorioService;
 
 import java.math.BigDecimal;
@@ -12,33 +12,27 @@ import java.math.BigDecimal;
 public class Main {
     public static void main(String[] args) {
 
-        Usuario usuario = new Usuario("Carlos", "carlos@email.com");
+        UsuarioRepository repository = new UsuarioRepositoryJson();
 
-        // Receitas
+        // Cria e salva um usuário
+        Usuario usuario = new Usuario("Diogo", "diogo@email.com");
         usuario.adicionarReceita(new BigDecimal("5000.00"), "Salário abril", Categoria.SALARIO);
-        usuario.adicionarReceita(new BigDecimal("800.00"), "Freela site", Categoria.FREELANCE);
-
-        // Despesas
-        usuario.adicionarDespesa(new BigDecimal("1200.00"), "Aluguel", Categoria.MORADIA);
-        usuario.adicionarDespesa(new BigDecimal("450.00"), "Mercado", Categoria.ALIMENTACAO);
-        usuario.adicionarDespesa(new BigDecimal("120.00"), "Uber do mês", Categoria.TRANSPORTE);
-        usuario.adicionarDespesa(new BigDecimal("89.90"), "Farmácia", Categoria.SAUDE);
-        usuario.adicionarDespesa(new BigDecimal("200.00"), "Curso Java", Categoria.EDUCACAO);
-
-        // Metas
+        usuario.adicionarReceita(new BigDecimal("800.00"),  "Freela site",   Categoria.FREELANCE);
+        usuario.adicionarDespesa(new BigDecimal("1200.00"), "Aluguel",       Categoria.MORADIA);
+        usuario.adicionarDespesa(new BigDecimal("450.00"),  "Mercado",       Categoria.ALIMENTACAO);
         usuario.adicionarMeta(new Meta(Categoria.ALIMENTACAO, new BigDecimal("400.00")));
-        usuario.adicionarMeta(new Meta(Categoria.MORADIA, new BigDecimal("1500.00")));
-        usuario.adicionarMeta(new Meta(Categoria.TRANSPORTE, new BigDecimal("150.00")));
-        usuario.adicionarMeta(new Meta(Categoria.SAUDE, new BigDecimal("100.00")));
 
-        // Resumo
-        usuario.exibirResumo();
+        repository.salvar(usuario);
+        System.out.println("Usuário salvo com ID: " + usuario.getId());
 
-        // Relatório
-        RelatorioService relatorio = new RelatorioService(usuario.getCarteira());
-        relatorio.exibirRelatorio();
-
-        // Verificação de metas
-        relatorio.verificarMetas(usuario.getMetas());
+        // Busca pelo ID — simulando o programa reiniciando
+        System.out.println("\nBuscando usuário salvo...");
+        repository.buscarPorId(usuario.getId()).ifPresentOrElse(
+                u -> {
+                    u.exibirResumo();
+                    new RelatorioService(u.getCarteira()).exibirRelatorio();
+                },
+                () -> System.out.println("Usuário não encontrado.")
+        );
     }
 }
