@@ -18,6 +18,7 @@ public class Usuario {
     private Carteira carteira;
     private List<Meta> metas = new ArrayList<>();
 
+    // Construtor 1 — uso normal, cria usuário novo
     public Usuario(String nome, String email) {
         validarNome(nome);
         validarEmail(email);
@@ -28,6 +29,18 @@ public class Usuario {
         this.carteira = new Carteira();
     }
 
+    // Construtor 2 — usado pelo JDBC, reconstrói do banco
+    public Usuario(String id, String nome, String email) {
+        validarNome(nome);
+        validarEmail(email);
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.carteira = new Carteira();
+        this.metas = new ArrayList<>();
+    }
+
+    // Construtor 3 — usado pelo Jackson, reconstrói do JSON
     protected Usuario() {
         this.id = null;
         this.carteira = new Carteira();
@@ -74,10 +87,21 @@ public class Usuario {
         carteira.exibirResumo();
     }
 
-    public Carteira getCarteira() { return carteira; }
-    public String getId()         { return id; }
-    public String getNome()       { return nome; }
-    public String getEmail()      { return email; }
+    public Carteira getCarteira() {
+        return carteira;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 
     public void setNome(String nome) {
         validarNome(nome);
