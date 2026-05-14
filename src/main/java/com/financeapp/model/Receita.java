@@ -1,9 +1,11 @@
 package com.financeapp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import java.math.BigDecimal;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
+@DiscriminatorValue("RECEITA")
 public class Receita extends Transacao {
 
     public Receita(BigDecimal valor, String descricao, Categoria categoria) {
@@ -13,7 +15,5 @@ public class Receita extends Transacao {
     protected Receita() {}
 
     @Override
-    public String getTipo() {
-        return "RECEITA";
-    }
+    public String getTipo() { return "RECEITA"; }
 }

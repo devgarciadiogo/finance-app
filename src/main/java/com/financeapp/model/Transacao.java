@@ -1,30 +1,46 @@
 package com.financeapp.model;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        property = "tipo"
-)
+@Entity
+@Table(name = "transacoes")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "tipo", visible = false)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Receita.class, name = "RECEITA"),
         @JsonSubTypes.Type(value = Despesa.class, name = "DESPESA")
 })
-
 public abstract class Transacao {
 
+    @Id
+    @Column(name = "id")
     private String id;
+
+    @Column(name = "data", nullable = false)
     private LocalDate data;
+
+    @Column(name = "valor", nullable = false)
     private BigDecimal valor;
+
+    @Column(name = "descricao", nullable = false)
     private String descricao;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "categoria", nullable = false)
     private Categoria categoria;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
     public Transacao(BigDecimal valor, String descricao, Categoria categoria) {
-        // Validações
         if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Valor deve ser maior que zero.");
         }
@@ -34,47 +50,26 @@ public abstract class Transacao {
         if (categoria == null) {
             throw new IllegalArgumentException("Categoria é obrigatória.");
         }
-
-        this.id = UUID.randomUUID().toString();
+        this.id = java.util.UUID.randomUUID().toString();
         this.data = LocalDate.now();
         this.valor = valor;
         this.descricao = descricao;
         this.categoria = categoria;
     }
 
-    protected Transacao() {
-        this.id = null;
-        this.data = null;
-        this.valor = null;
-        this.descricao = null;
-        this.categoria = null;
-    }
+    protected Transacao() {}
 
-    // Método abstrato — cada subclasse OBRIGA a dizer o seu tipo
+    @JsonIgnore
     public abstract String getTipo();
 
-    // Getters
-    public String getId() {
-        return id;
-    }
+    public String getId()           { return id; }
+    public LocalDate getData()      { return data; }
+    public BigDecimal getValor()    { return valor; }
+    public String getDescricao()    { return descricao; }
+    public Categoria getCategoria() { return categoria; }
+    public Usuario getUsuario()     { return usuario; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
 
-    public LocalDate getData() {
-        return data;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    // Setter com validação — só o valor pode mudar depois
     public void setValor(BigDecimal valor) {
         if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Valor deve ser maior que zero.");
@@ -85,10 +80,6 @@ public abstract class Transacao {
     @Override
     public String toString() {
         return String.format("[%s] %s | R$ %.2f | %s | %s",
-                getTipo(),
-                descricao,
-                valor,
-                categoria.exibir(),
-                data);
+                getTipo(), descricao, valor, categoria.exibir(), data);
     }
 }
