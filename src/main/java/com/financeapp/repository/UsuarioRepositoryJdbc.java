@@ -26,7 +26,6 @@ public class UsuarioRepositoryJdbc implements UsuarioRepository {
             stmt.setString(5, usuario.getEmail());
             stmt.executeUpdate();
 
-            // Salva transações e metas separadamente
             salvarTransacoes(conn, usuario);
             salvarMetas(conn, usuario);
 
@@ -36,7 +35,6 @@ public class UsuarioRepositoryJdbc implements UsuarioRepository {
     }
 
     private void salvarTransacoes(Connection conn, Usuario usuario) throws SQLException {
-        // Remove as antigas e insere as atuais
         String deleteSql = "DELETE FROM transacoes WHERE usuario_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(deleteSql)) {
             stmt.setString(1, usuario.getId());
@@ -169,9 +167,8 @@ public class UsuarioRepositoryJdbc implements UsuarioRepository {
         }
     }
 
-    // Monta o objeto Usuario a partir do ResultSet
     private Usuario construirUsuario(ResultSet rs) throws SQLException {
-        return new Usuario(
+        return Usuario.reconstituir(
                 rs.getString("id"),
                 rs.getString("nome"),
                 rs.getString("email")
@@ -186,10 +183,10 @@ public class UsuarioRepositoryJdbc implements UsuarioRepository {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                String tipo = rs.getString("tipo");
+                String tipo      = rs.getString("tipo");
                 BigDecimal valor = rs.getBigDecimal("valor");
                 String descricao = rs.getString("descricao");
-                Categoria cat = Categoria.valueOf(rs.getString("categoria"));
+                Categoria cat    = Categoria.valueOf(rs.getString("categoria"));
 
                 Transacao t = tipo.equals("RECEITA")
                         ? new Receita(valor, descricao, cat)
@@ -208,7 +205,7 @@ public class UsuarioRepositoryJdbc implements UsuarioRepository {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Categoria cat = Categoria.valueOf(rs.getString("categoria"));
+                Categoria cat     = Categoria.valueOf(rs.getString("categoria"));
                 BigDecimal limite = rs.getBigDecimal("valor_limite");
                 usuario.adicionarMeta(new Meta(cat, limite));
             }

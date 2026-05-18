@@ -14,7 +14,7 @@ public class UsuarioService {
 
     private final UsuarioJpaRepository repository;
 
-    // Spring injeta o repository automaticamente — isso é Injeção de Dependência
+    // Spring injeta o repository automaticamente
     public UsuarioService(UsuarioJpaRepository repository) {
         this.repository = repository;
     }
